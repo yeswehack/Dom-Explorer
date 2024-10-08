@@ -2,7 +2,7 @@
 
 Dom-Explorer is a web-based tool designed for testing various HTML parsers and sanitizers. It displays the results of each parser as a tree and allows users to create pipelines that chain multiple parsers to visualize the transformation of HTML at each step. 
 
-This repository contains the source code for the website published at: [Dom-Explorer Website](https://b-i-t-k.github.io/Dom-Explorer/).
+This repository contains the source code for the website published at: [Dom-Explorer Website](https://yeswehack.github.io/Dom-Explorer/).
 
 ## Features
 
