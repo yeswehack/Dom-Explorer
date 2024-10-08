@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>hello-wasm example</title>
+  </head>
+  <body>
+    <script type="module">
+      import init, { SanitizerInput, sanitize } from "./pkg/ammonia_wasm.js";
+
+      async function run() {
+        await init();
+
+        const inputObj = new SanitizerInput(
+          "<div>Test</div>",
+          ["div"], // add_tags
+          ["class"], // add_attrs
+          ["https"], // add_urls
+          true, // strip_comment
+        );
+
+        const result = sanitize(inputObj);
+      }
+
+      run();
+    </script>
+  </body>
+</html>

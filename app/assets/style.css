@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Name: custom color palette
+       Author: Ilias Ism
+       URL: https://gradient.page */
+
+    /* CSS: .bg-gradient { background: var(--gradient) } */
+    --gradient: linear-gradient(to top left,#000C40,#607D8B);
+    --background: 243 100% 98.26%;
+    --foreground: 243 10% 0.52%;
+
+    --muted: 243 10% 91.3%;
+    --muted-foreground: 243 5% 41.3%;
+
+    --popover: 243 10% 91.3%;
+    --popover-foreground: 243 10% 0.65%;
+
+    --card: 243 10% 91.3%;
+    --card-foreground: 243 10% 0.65%;
+
+    --border: 243 15% 89.52%;
+    --input: 243 15% 89.52%;
+
+    --primary: 243 100% 13%;
+    --primary-foreground: 243 2% 91.3%;
+
+    --secondary: 243 5% 73.9%;
+    --secondary-foreground: 243 7% 11.3%;
+
+    --accent: 243 5% 73.9%;
+    --accent-foreground: 243 7% 11.3%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --ring: 243 100% 13%;
+
+    --radius: 0.5rem;
+
+    
+    /* Name: custom color palette
+       Author: Ilias Ism
+       URL: https://gradient.page */
+
+    /* CSS: .bg-gradient { background: var(--gradient) } */
+    --gradient: linear-gradient(to top left, #3a6186, #89253e);
+
+    --background: 222 26% 3.04%;
+    --foreground: 222 4% 96.9%;
+
+    --muted: 222 20% 11.4%;
+    --muted-foreground: 222 4% 53.8%;
+
+    --popover: 222 57% 4.94%;
+    --popover-foreground: 222 4% 96.9%;
+
+    --card: 222 57% 4.94%;
+    --card-foreground: 222 4% 96.9%;
+
+    --border: 222 20% 11.4%;
+    --input: 222 20% 11.4%;
+
+    --primary: 222 40% 38%;
+    --primary-foreground: 222 4% 96.9%;
+
+    --secondary: 222 20% 11.4%;
+    --secondary-foreground: 222 4% 96.9%;
+
+    --accent: 222 20% 11.4%;
+    --accent-foreground: 222 4% 96.9%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 222 4% 96.9%;
+
+    --ring: 222 40% 38%;
+  }
+}
+
+@layer base {
+  [class*="border"] {
+    @apply border-border;
+  }
+}
+
+html {
+  @apply bg-black text-foreground;
+}
