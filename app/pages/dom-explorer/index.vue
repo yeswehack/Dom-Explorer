@@ -6,14 +6,20 @@
           <SyncModeDialog />
           <PresetsDialog>
             <Button class="h-8">
-              <Icon name="settings" class="mr-2" />
+              <Icon name="bookMarked" class="mr-2" />
               Presets
             </Button>
           </PresetsDialog>
-          <Button class="h-8" @click="addPipeline">
-            <Icon name="plus" class="mr-2" />
-            Pipeline
-          </Button>
+          <PipeCreateButton
+            allow-empty
+            @create="addPipeline"
+            @create-empty="addPipeline"
+          >
+            <Button class="h-8">
+              <Icon name="plus" class="mr-2" />
+              Pipeline
+            </Button>
+          </PipeCreateButton>
         </div>
       </template>
     </LayoutHeader>
@@ -40,6 +46,8 @@
 </template>
 
 <script lang="ts" setup>
+import type { Pipe } from "~/types";
+
 const state = ref(parseStateFromHash());
 
 onMounted(() => {
@@ -59,24 +67,11 @@ createDomExplorerSettings({
   },
 });
 
-function addPipeline() {
+function addPipeline(pipe?: Pipe) {
   state.value.pipelines.push({
     id: randomId(),
     name: `Pipeline ${state.value.pipelines.length + 1}`,
-    pipes: [
-      {
-        name: "DomParser",
-        id: randomId(),
-        hide: false,
-        skip: false,
-        opts: {
-          addDoctype: false,
-          output: "innerHTML",
-          selector: "body",
-          type: "text/html",
-        },
-      },
-    ],
+    pipes: pipe ? [pipe] : [],
   });
 }
 

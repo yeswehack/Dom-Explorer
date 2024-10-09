@@ -3,7 +3,8 @@ import { pipeParser, pipes } from "~/components/DomExplorer/Pipes";
 
 export const pipeNames = pipes.map((pipe) => pipe.name);
 
-export interface Pipe<T extends object = object> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface Pipe<T = any> {
   name: string;
   id: string;
   hide: boolean;
@@ -75,12 +76,11 @@ export type DomExplorerState = z.infer<typeof stateParser>;
 export type DomExplorerSettings = z.infer<typeof settingsParser>;
 
 export type JSONValue = string | number | boolean | JSONObject | JSONArray;
-export type JSONArray = JSONValue[]
+export type JSONArray = JSONValue[];
 
 export interface JSONObject {
   [x: string]: JSONValue;
 }
-
 
 export function isValidPipeName(name: string): boolean {
   return (pipeNames as string[]).includes(name);

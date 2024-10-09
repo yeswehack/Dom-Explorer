@@ -21,3 +21,4 @@ export { RefreshCwIcon } from "lucide-vue-next";
 export { NetworkIcon } from "lucide-vue-next";
 export { DicesIcon } from "lucide-vue-next";
 export { ScanTextIcon } from "lucide-vue-next";
+export { BookMarkedIcon } from "lucide-vue-next";

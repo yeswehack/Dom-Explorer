@@ -1,12 +1,18 @@
 <template>
   <Dialog v-model:open="open">
     <DialogTrigger>
-      <Button class="h-8 capitalize">{{ buttonTitle }}</Button>
+      <Button class="h-8 capitalize">
+        <Icon name="cable" class="mr-2" />
+        {{ buttonTitle }}
+      </Button>
     </DialogTrigger>
     <DialogContent>
       <DialogHeader>
         <DialogTitle>Sync Tabs</DialogTitle>
-        <DialogDescription class="sr-only"> Sync tabs</DialogDescription>
+        <DialogDescription>
+          You can use this feature to sync tabs between different browser.
+          Synched tabs will be updated in real-time.
+        </DialogDescription>
       </DialogHeader>
 
       <SyncModeConnectionTable />
@@ -15,7 +21,7 @@
         <Button @click="start">Start pairing</Button>
         <Button @click="join">Join pairing</Button>
       </div>
-      <div v-else class="mt-2 h-1 w-full bg-border"/>
+      <div v-else class="mt-2 h-1 w-full bg-border" />
       <SyncModeStartPairing
         v-if="connection && tab === 'start'"
         :connection="connection"
