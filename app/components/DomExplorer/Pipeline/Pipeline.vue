@@ -84,6 +84,9 @@ function parseInput(s: string) {
     .replace(/<([a-z0-9-]+)\*(\d{1,3})>/g, (all, tag, repeat) => {
       return `<${tag}>`.repeat(parseInt(repeat));
     })
+    .replace(/<\/([a-z0-9-]+)\*(\d{1,3})>/g, (all, tag, repeat) => {
+      return `</${tag}>`.repeat(parseInt(repeat));
+    })
     .replace(/\\u([0-9a-f]{4})/g, (_, hex) =>
       String.fromCharCode(parseInt(hex, 16)),
     );
