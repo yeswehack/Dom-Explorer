@@ -46,7 +46,7 @@ const pipeline = computed(() => {
 const settings = useDomExplorerSettings();
 
 const href = computed(() => {
-  const url = new URL("/dom-explorer", window.location.origin);
+  const url = new URL("/Dom-Explorer/dom-explorer", window.location.origin);
   url.hash = window.location.hash;
 
   return url.href;
