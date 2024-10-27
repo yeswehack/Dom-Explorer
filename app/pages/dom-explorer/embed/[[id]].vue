@@ -165,7 +165,7 @@ const router = useRouter();
 const url = computed(() => {
   const url = router.resolve({
     name: "dom-explorer-frame",
-    hash: b64EncodeUnicode(JSON.stringify(state.value)),
+    hash: '#' + b64EncodeUnicode(JSON.stringify(state.value)),
     query: {
       input: settings.input,
       titleBar: settings.titleBar,
