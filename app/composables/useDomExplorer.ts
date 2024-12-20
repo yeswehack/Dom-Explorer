@@ -1,4 +1,8 @@
-import { stateParser, type DomExplorerSettings } from "~/types";
+import {
+  stateParser,
+  type DomExplorerSettings,
+  type DomExplorerState,
+} from "~/types";
 
 export function parseStateFromHash() {
   let state: unknown;
@@ -12,13 +16,17 @@ export function parseStateFromHash() {
   return stateParser.parse(state);
 }
 
+export function cloneState(state: DomExplorerState) {
+  return stateParser.parse(state);
+}
+
 const settingsKey = Symbol(
   "DomExplorerSettings",
 ) as InjectionKey<DomExplorerSettings>;
 
 export function createDomExplorerSettings(
   defaultSettings: DomExplorerSettings,
-) {
+): DomExplorerSettings {
   const settings = reactive(defaultSettings);
   provide(settingsKey, settings);
   return settings;

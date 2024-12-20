@@ -24,7 +24,8 @@ export const buttonVariants = cva(
         xs: "h-7 rounded px-2",
         sm: "h-8 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",
-        icon: "h-9 w-9",
+        icon: "h-8 w-8",
+        iconSm: "h-6 w-6",
       },
     },
     defaultVariants: {
@@ -33,5 +34,30 @@ export const buttonVariants = cva(
     },
   },
 );
+
+export const buttonIconVariants = cva("", {
+  variants: {
+    variant: {
+      default: "",
+      "ghost-destructive": "",
+      outline: "",
+      secondary: "",
+      ghost: "",
+      link: "",
+    },
+    size: {
+      default: "mr-2 size-5",
+      xs: "",
+      sm: "",
+      lg: "",
+      icon: "",
+      iconSm: "size-4"
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+    size: "default",
+  },
+});
 
 export type ButtonVariants = VariantProps<typeof buttonVariants>;

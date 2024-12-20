@@ -1,101 +1,61 @@
 <template>
-  <Dialog v-model:open="open">
-    <DialogTrigger>
-      <Button class="h-8 capitalize">
-        <Icon name="cable" class="mr-2" />
-        {{ buttonTitle }}
-      </Button>
-    </DialogTrigger>
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle>Sync Tabs</DialogTitle>
-        <DialogDescription>
-          You can use this feature to sync tabs between different browser.
-          Synched tabs will be updated in real-time.
-        </DialogDescription>
-      </DialogHeader>
-
-      <SyncModeConnectionTable />
-
-      <div v-if="tab == 'none'" class="mt-2 flex justify-center gap-4">
-        <Button @click="start">Start pairing</Button>
-        <Button @click="join">Join pairing</Button>
+  <DualSheet
+    v-model:open="open"
+    title="Sync Tabs"
+    description="You can use this feature to sync tabs between different browser.
+          Synched tabs will be updated in real-time."
+  >
+    <template #trigger>
+      <slot />
+    </template>
+    <template #center>
+      <Card class="mx-auto max-w-4xl">
+        <CardHeader>
+          <CardTitle>Connections</CardTitle>
+        </CardHeader>
+        <SyncModeConnectionTable />
+      </Card>
+    </template>
+    <template #side>
+      <div class="flex flex-col gap-6">
+        <Label class="flex items-center justify-between gap-2">
+          Tab name:
+          <Input v-model="tabName" class="flex-1" />
+        </Label>
+        <div class="flex flex-col gap-2">
+          <h2 class="font-semibold">Join with offer id</h2>
+          <form class="flex gap-2" @submit.prevent="joinRoomId">
+            <Input
+              v-model="roomId"
+              class="flex-1"
+              required
+              :spellcheck="false"
+              pattern="[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+            />
+            <Button
+              icon="cable"
+              size="icon"
+              tooltip="Connect"
+              class="self-center"
+              type="submit"
+              :disabled="!roomId"
+            />
+          </form>
+        </div>
       </div>
-      <div v-else class="mt-2 h-1 w-full bg-border" />
-      <SyncModeStartPairing
-        v-if="connection && tab === 'start'"
-        :connection="connection"
-      />
-      <SyncModeJoinPairing
-        v-if="connection && tab === 'join'"
-        :connection="connection"
-      />
-    </DialogContent>
-  </Dialog>
+    </template>
+  </DualSheet>
 </template>
 
-<script setup lang="ts">
-import SyncModeConnectionTable from "./SyncModeConnectionTable.vue";
-import SyncModeJoinPairing from "./SyncModeJoinPairing.vue";
-import SyncModeStartPairing from "./SyncModeStartPairing.vue";
+<script lang="ts" setup>
+const open = defineModel<boolean>("open", { default: false });
 
-const { createConnection, connections } = useRTCConnections();
+const { tabName, joinRoom } = useSyncTabs();
+const roomId = ref("");
 
-const connection = ref<RTCConnection>();
-
-const tab = ref("none");
-const open = ref(false);
-
-whenever(
-  () => !open.value,
-  () => {
-    tab.value = "none";
-    connection.value = undefined;
-  },
-);
-
-const buttonTitle = computed(() => {
-  if (connections.value.length) {
-    return `Synched (${connections.value.length})`;
-  } else {
-    return "Sync Tabs";
-  }
-});
-
-function close() {
-  tab.value = "none";
-  connection.value = undefined;
-}
-
-function start() {
-  const con = createConnection();
-  con.onClose(() => {
-    if (con.id === connection.value?.id) {
-      close();
-    }
+function joinRoomId() {
+  joinRoom(roomId.value).then(() => {
+    roomId.value = "";
   });
-  con.onOpen(() => {
-    if (con === connection.value) {
-      close();
-    }
-  });
-  connection.value = con;
-  tab.value = "start";
-}
-
-function join() {
-  const con = createConnection();
-  con.onClose(() => {
-    if (con === connection.value) {
-      close();
-    }
-  });
-  con.onOpen(() => {
-    if (con === connection.value) {
-      close();
-    }
-  });
-  connection.value = con;
-  tab.value = "join";
 }
 </script>

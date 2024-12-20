@@ -28,13 +28,10 @@ const props = defineProps<{
   itemClass?: HTMLAttributes["class"];
   removeOnSpill?: boolean;
   class?: HTMLAttributes["class"];
-  clonable?: boolean;
   items: T[];
 }>();
 
 const container = ref<HTMLElement>();
-
-const ctrl = useKeyModifier("Control");
 const sortableData = useSortableData();
 const grabbing = ref(false);
 
@@ -66,7 +63,7 @@ function updateSortable() {
     group: {
       name: props.group,
       pull: () => {
-        return props.clonable && ctrl.value ? "clone" : true;
+        return true;
       },
     },
     disabled: props.disabled,

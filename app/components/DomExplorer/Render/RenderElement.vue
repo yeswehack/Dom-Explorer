@@ -1,5 +1,5 @@
 <template>
-  <DomBase :tag="tagName" :ns="ns">
+  <DomBase :tag="tagName" :ns="ns" :depth="depth">
     <template #attrs>
       <div class="flex flex-wrap gap-2 pl-2 empty:hidden">
         <div v-for="attr of attrs" :key="attr.name" class="flex text-nowrap">
@@ -11,15 +11,15 @@
       </div>
     </template>
     <template v-for="(child, idx) in children" :key="idx">
-      <RenderNode :node="child" />
+      <RenderNode :node="child" :depth="depth + repeating + 1" />
     </template>
   </DomBase>
 </template>
 
 <script lang="ts" setup>
-
 const props = defineProps<{
   el: Element;
+  depth: number;
 }>();
 
 const ns = computed(() => {

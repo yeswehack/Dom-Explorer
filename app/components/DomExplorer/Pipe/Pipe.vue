@@ -24,29 +24,21 @@
         </template>
       </PipeDialog>
       <div class="ml-auto flex items-center gap-2 transition-opacity">
-        <ToggleGroup
-          v-model="innerModel"
-          class="ml-auto"
-          type="multiple"
-          variant="outline"
-        >
-          <Tooltip label="Hide">
+        <ToggleGroup v-model="innerModel" type="multiple" variant="outline">
+          <Tooltip v-if="settings.pipe.render && !pipe.skip" label="Hide">
             <ToggleGroupItem
-              v-if="settings.pipe.render && !pipe.skip"
               value="hide"
               aria-label="Toggle render"
               class="group size-7 p-1"
             >
-              <Icon name="eye" class="size-4 group-data-[state=on]:hidden" />
               <Icon
-                name="eyeOff"
-                class="size-4 group-data-[state=off]:hidden"
+                :name="innerModel.includes('hide') ? 'eyeOff' : 'eye'"
+                class="size-4"
               />
             </ToggleGroupItem>
           </Tooltip>
-          <Tooltip label="Skip">
+          <Tooltip v-if="settings.pipe.skip" label="Skip">
             <ToggleGroupItem
-              v-if="settings.pipe.skip"
               value="skip"
               aria-label="Toggle skip"
               class="size-7 p-1 data-[state=on]:bg-destructive data-[state=on]:text-destructive-foreground"
@@ -54,16 +46,17 @@
               <Icon name="ban" class="size-4" />
             </ToggleGroupItem>
           </Tooltip>
+          <Tooltip v-if="!settings.readonly" label="Delete">
+            <Button
+              class="size-7 border border-input hover:border-destructive"
+              size="icon"
+              variant="ghost-destructive"
+              @click="emit('delete')"
+            >
+              <Icon name="trash" class="size-4" />
+            </Button>
+          </Tooltip>
         </ToggleGroup>
-        <Button
-          v-if="!settings.readonly"
-          class="size-7 border border-input hover:border-destructive"
-          size="icon"
-          variant="ghost-destructive"
-          @click="emit('delete')"
-        >
-          <Icon name="trash" class="size-4" />
-        </Button>
       </div>
     </div>
     <div v-else />
@@ -93,7 +86,7 @@ const emit = defineEmits<{
 }>();
 
 const title = computed(() => {
-  return props.title || props.pipe.name;
+  return props.pipe.displayName ?? (props.title || props.pipe.name);
 });
 
 const innerModel = computed<string[]>({

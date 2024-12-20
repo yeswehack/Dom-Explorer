@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-type Imp = (f:string) => Promise<any>
+type Imp = (f: string) => Promise<any>;
 type StrFunc = (imp: Imp, ...args: any[]) => string | Promise<string>;
 type GetParams<T> = T extends (imp: Imp, ...args: infer P) => any ? P : never;
 interface WaitingForReply {
@@ -8,7 +8,14 @@ interface WaitingForReply {
   reject: (s: string) => void;
 }
 
-function wrapper(f: StrFunc, sandboxId: string, origin: string, imp: Imp) {
+function wrapper(
+  setup: () => void,
+  f: StrFunc,
+  sandboxId: string,
+  origin: string,
+  imp: Imp,
+) {
+  setup();
   parent.postMessage({ sandboxId, ready: true }, origin);
   window.addEventListener("message", async (e) => {
     if (e.origin !== origin) return;
@@ -22,7 +29,10 @@ function wrapper(f: StrFunc, sandboxId: string, origin: string, imp: Imp) {
   });
 }
 
-export function useSandbox<T extends StrFunc>(f: T) {
+export function useSandbox<T extends StrFunc>(
+  f: T,
+  setup: () => void = () => {},
+) {
   const waitingForFrame = new Set<{ callId: string; args: GetParams<T> }>();
   const waitingForReply = new Map<string, WaitingForReply>();
   const sandboxId = randomId(32);
@@ -55,7 +65,7 @@ export function useSandbox<T extends StrFunc>(f: T) {
     }
   });
 
-  const script = `(${wrapper})((${f}), "${sandboxId}", "${window.location.origin}", s=>import(s))`;
+  const script = `(${wrapper})((${setup}),(${f}), "${sandboxId}", "${window.location.origin}", s=>import(s))`;
   const url = `data:application/javascript;base64,${btoa(script)}`;
   frame.srcdoc = `<script src="${url}" type="module"></script>`;
 

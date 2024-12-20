@@ -43,5 +43,3 @@ defineProps<{
   wClass?: string;
 }>();
 </script>
-
-<style lang="scss" scoped></style>

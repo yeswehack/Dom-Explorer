@@ -1,47 +1,61 @@
 <template>
-  <div class="grid grid-cols-[auto_auto_auto_auto_32px] text-sm">
-    <div
-      class="col-span-full grid grid-cols-[subgrid] items-end border-b px-2 py-1 font-medium text-muted-foreground"
-    >
-      <div>Name</div>
-      <div>State</div>
-      <div class="col-span-2 grid grid-cols-[subgrid] text-center">
-        <div class="col-span-2">Follow</div>
-        <div>Input</div>
-        <div>Pipelines</div>
-      </div>
-      <div />
-    </div>
-    <div
-      v-for="con of connections"
-      :key="con.id"
-      class="col-span-full grid grid-cols-[subgrid] p-2"
-    >
-      <div>
-        {{ con.name }}
-      </div>
-      <div>
-        {{ con.state }}
-      </div>
-      <div class="flex items-center justify-center">
-        <Checkbox v-model="con.followInput" />
-      </div>
-      <div class="flex items-center justify-center">
-        <Checkbox v-model="con.followPipelines" />
-      </div>
-      <div>
-        <Button
-          class="size-5 hover:bg-destructive"
-          size="icon"
-          @click="con.close()"
+  <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHead> Name </TableHead>
+        <TableHead class="w-48">State</TableHead>
+        <TableHead class="w-48 text-center">Follow Inputs</TableHead>
+        <TableHead class="w-48 text-center">Follow Pipelines</TableHead>
+        <TableHead class="text-right">Actions</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <SyncModeRow v-for="con of connections" :key="con.id" :con="con" />
+      <TableRow v-if="!connections.length">
+        <TableCell colspan="5" class="text-center text-muted-foreground">
+          No connections
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell
+          colspan="5"
+          class="space-y-2 py-4 text-center text-muted-foreground"
         >
-          <Icon name="trash" class="size-4" />
-        </Button>
-      </div>
-    </div>
-  </div>
+          <Alert v-if="error" variant="destructive">
+            <Icon name="triangleAlert" class="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription class="min-w-72">
+              {{ error }}
+            </AlertDescription>
+          </Alert>
+          <Button
+            label="Create connection offer"
+            :icon="createIcon"
+            :icon-class="loading && 'animate-spin'"
+            @click="createLink"
+          />
+        </TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
 </template>
 
 <script setup lang="ts">
-const { connections } = useRTCConnections();
+const { connections, createRoom } = useSyncTabs();
+const loading = ref(false);
+const error = ref("");
+const createIcon = computed(() => (loading.value ? "loaderCircle" : "plus"));
+
+async function createLink() {
+  if (loading.value) return;
+  loading.value = true;
+  error.value = "";
+  try {
+    await createRoom();
+  } catch (e) {
+    error.value = `${e}`;
+  } finally {
+    loading.value = false;
+  }
+}
 </script>

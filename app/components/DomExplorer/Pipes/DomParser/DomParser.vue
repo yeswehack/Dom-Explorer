@@ -74,7 +74,7 @@
     </template>
 
     <template #render>
-      <RenderNode v-if="node" :node="node" />
+      <RenderNode v-if="node" :node="node" :depth="startingDepth" />
       <div v-else class="bg-muted px-1 text-muted-foreground">
         Selector returned nothing :&lpar;
       </div>
@@ -192,5 +192,16 @@ watchEffect(() => {
 
 watchEffect(() => {
   emit("update", result.value);
+});
+
+const startingDepth = computed(() => {
+  let depth = -1;
+
+  let current = node.value;
+  while (current && current.parentNode) {
+    current = current.parentNode;
+    depth++;
+  }
+  return depth;
 });
 </script>

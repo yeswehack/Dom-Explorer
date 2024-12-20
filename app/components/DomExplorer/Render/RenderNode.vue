@@ -1,15 +1,19 @@
 <template>
-  <RenderElement v-if="isElement(node)" :el="node" />
-  <RenderTextFragment v-else-if="isTextFragment(node)" :content="node" />
-  <RenderComment v-else-if="isComment(node)" :comment="node" />
-  <RenderDocument v-else-if="isDocument(node)" :fragment="node" />
-  <RenderDoctype v-else-if="isDoctype(node)" :doctype="node" />
+  <RenderElement v-if="isElement(node)" :el="node" :depth="depth" />
+  <RenderTextFragment v-else-if="isTextFragment(node)" :content="node" :depth="depth" />
+  <RenderComment v-else-if="isComment(node)" :comment="node" :depth="depth" />
+  <RenderDocument v-else-if="isDocument(node)" :fragment="node" :depth="depth" />
+  <RenderDoctype v-else-if="isDoctype(node)" :doctype="node" :depth="depth" />
 </template>
 
 <script lang="ts" setup>
-const props = defineProps<{
-  node: Node;
-}>();
+const props = withDefaults(
+  defineProps<{
+    node: Node;
+    depth?: number;
+  }>(),
+  { depth: 0 },
+);
 
 const nodeType = computed(() => {
   return Object.getOwnPropertyDescriptor(Node.prototype, "nodeType")?.get?.call(
@@ -22,7 +26,10 @@ function isElement(node: Node): node is Element {
 }
 
 function isTextFragment(node: Node): node is Text {
-  return nodeType.value === Node.TEXT_NODE || nodeType.value === Node.CDATA_SECTION_NODE;
+  return (
+    nodeType.value === Node.TEXT_NODE ||
+    nodeType.value === Node.CDATA_SECTION_NODE
+  );
 }
 
 function isComment(node: Node): node is Comment {
@@ -36,5 +43,4 @@ function isDocument(node: Node): node is Document {
 function isDoctype(node: Node): node is DocumentType {
   return nodeType.value === Node.DOCUMENT_TYPE_NODE;
 }
-
 </script>

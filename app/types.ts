@@ -6,6 +6,7 @@ export const pipeNames = pipes.map((pipe) => pipe.name);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface Pipe<T = any> {
   name: string;
+  displayName?: string;
   id: string;
   hide: boolean;
   skip: boolean;
@@ -89,11 +90,17 @@ export function isValidPipeName(name: string): boolean {
 export function createPipe(
   name: string,
   opts?: unknown,
-  extra?: { hide: boolean; skip: boolean; id: string },
+  extra?: Partial<{
+    hide: boolean;
+    skip: boolean;
+    id: string;
+    displayName: string;
+  }>,
 ): Pipe {
   return pipeParser.parse({
     name,
     opts,
+    displayName: extra?.displayName,
     hide: extra?.hide,
     skip: extra?.skip,
     id: extra?.id ?? randomId(),

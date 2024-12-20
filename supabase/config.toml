@@ -1,0 +1,53 @@
+# For detailed configuration reference documentation, visit:
+# https://supabase.com/docs/guides/local-development/cli/config
+# A string used to distinguish different Supabase projects on the same host. Defaults to the
+# working directory name when running `supabase init`.
+project_id = "Dom-Explorer"
+
+[api]
+enabled = true
+# Port to use for the API URL.
+port = 54321
+# Schemas to expose in your API. Tables, views and stored procedures in this schema will get API
+# endpoints. `public` is always included.
+schemas = ["public", "graphql_public"]
+# Extra schemas to add to the search_path of every request. `public` is always included.
+extra_search_path = ["public", "extensions"]
+# The maximum number of rows returns from a view, table, or stored procedure. Limits payload size
+# for accidental or malicious requests.
+max_rows = 1000
+
+[api.tls]
+enabled = false
+
+[db]
+# Port to use for the local database URL.
+port = 54322
+# Port used by db diff command to initialize the shadow database.
+shadow_port = 54320
+# The database major version to use. This has to be the same as your remote database's. Run `SHOW
+# server_version;` on the remote database to check.
+major_version = 15
+
+[studio]
+enabled = true
+# Port to use for Supabase Studio.
+port = 54323
+# External URL of the API server that frontend connects to.
+api_url = "http://127.0.0.1"
+# OpenAI API Key to use for Supabase AI in the Supabase Studio.
+openai_api_key = "env(OPENAI_API_KEY)"
+
+
+# Experimental features may be deprecated any time
+[experimental]
+# Configures Postgres storage engine to use OrioleDB (S3)
+orioledb_version = ""
+# Configures S3 bucket URL, eg. <bucket_name>.s3-<region>.amazonaws.com
+s3_host = "env(S3_HOST)"
+# Configures S3 bucket region, eg. us-east-1
+s3_region = "env(S3_REGION)"
+# Configures AWS_ACCESS_KEY_ID for S3 bucket
+s3_access_key = "env(S3_ACCESS_KEY)"
+# Configures AWS_SECRET_ACCESS_KEY for S3 bucket
+s3_secret_key = "env(S3_SECRET_KEY)"

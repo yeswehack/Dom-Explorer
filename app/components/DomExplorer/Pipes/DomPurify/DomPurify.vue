@@ -40,6 +40,25 @@
           {{ error }}
         </div>
       </PipeOption>
+      <PipeOption label="Hooks">
+        <p>
+          If you need to add some hooks to DOMPurify before sanitizing the
+          input, you can use this field. Don't forget to call
+          <code>removeAllHooks</code> since the function will be called
+          everytime the input change.
+        </p>
+        <CodeEditor
+          v-model="pipe.opts.hooks"
+          :read-only="readOnly"
+          lang="javascript"
+        />
+        <div
+          v-if="error"
+          class="mt-2 rounded-md bg-destructive p-2 text-destructive-foreground"
+        >
+          {{ error }}
+        </div>
+      </PipeOption>
     </template>
 
     <template #render>
@@ -50,7 +69,7 @@
 
 <script lang="ts" setup>
 import type { Pipe } from "~/types.js";
-import type { Opts } from "./DomPurify.pipe.js";
+import { hooksTemplate, type Opts } from "./DomPurify.pipe.js";
 
 const props = defineProps<{
   input: string;
@@ -67,17 +86,26 @@ const result = ref<string>("");
 const versions = usePackageVersions("dompurify");
 
 const sanitize = useSandbox(
-  async (imp, version: string, options: string, input: string) => {
+  async (imp, opts: Opts, input: string, hooksTemplate: string) => {
     const { default: DOMPurify } = await imp(
-      `https://cdn.jsdelivr.net/npm/dompurify@${version}/+esm`
+      `https://cdn.jsdelivr.net/npm/dompurify@${opts.version}/+esm`,
     );
-    const parsedOptions = options.trim() ? eval(`(${options})`) : {};
+    const parsedOptions = opts.options.trim() ? eval(`(${opts.options})`) : {};
+
+    if (opts.hooks && opts.hooks !== hooksTemplate) {
+      const parsedHooks = opts.hooks.trim() ? eval(`(${opts.hooks})`) : {};
+      if (parsedHooks && typeof parsedHooks === "function") {
+        parsedHooks(DOMPurify);
+      }
+    }
+
     return DOMPurify.sanitize(input, parsedOptions).toString();
   },
+  () => {},
 );
 
 watchEffect(() => {
-  sanitize(props.pipe.opts.version, props.pipe.opts.options, props.input)
+  sanitize(toRaw(props.pipe.opts), props.input, hooksTemplate)
     .then((res) => {
       result.value = res;
       error.value = "";

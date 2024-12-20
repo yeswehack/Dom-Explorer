@@ -7,9 +7,12 @@
       )
     "
   >
-    <div class="flex flex-1 items-center px-4">
+    <div class="flex flex-1 items-center px-4 pl-1">
+      <NuxtLink to="/" class="flex items-center justify-center gap-4 p-4">
+        <DomExplorerIcon class="size-8" />
+        <h1 class="hidden text-nowrap font-semibold sm:inline">{{ title }}</h1>
+      </NuxtLink>
       <slot>
-        <h1 class="font-semibold">{{ title }}</h1>
         <div class="flex-1" />
         <slot name="right" />
         <a href="https://yeswehack.com/" target="_blank">

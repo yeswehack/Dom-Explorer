@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="cn('relative min-h-[calc(100dvh-56px)] bg-white/5', $props.class)"
+    :class="cn('relative h-[calc(100dvh-56px)] bg-white/5 px-1.5 sm:px-4  md:px-8 ', $props.class)"
   >
     <slot />
   </div>

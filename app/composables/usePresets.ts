@@ -16,13 +16,19 @@ export function usePresets() {
     deep: true,
   });
 
-  function newPreset() {
+  function newPreset(pipeline?: Pipeline) {
     const id = randomId();
-    presets.value.push({
-      name: "New preset",
-      id,
-      pipes: [],
-    });
+    if (pipeline) {
+      const newPipeline = clonePipeline(pipeline);
+      newPipeline.id = id;
+      presets.value.push(newPipeline);
+    } else {
+      presets.value.push({
+        name: "New preset",
+        id,
+        pipes: [],
+      });
+    }
 
     return id;
   }

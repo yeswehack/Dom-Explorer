@@ -1,5 +1,5 @@
 <template>
-  <div class="group relative grid resize-y grid-cols-1 grid-rows-1">
+  <div class="group/editor relative grid resize-y grid-cols-1 grid-rows-1">
     <div
       el="output"
       class="col-start-1 row-start-1 max-w-full whitespace-pre-wrap break-all rounded-md border bg-card p-2 font-mono text-card-foreground"
@@ -12,11 +12,13 @@
       spellcheck="false"
       :placeholder="placeholder"
       :readonly="readOnly"
+      :disabled="readOnly"
       rows="1"
-      class="col-start-1 row-start-1 h-full resize-none whitespace-pre-wrap break-all rounded-md border-none bg-transparent p-2 font-mono text-transparent caret-black/80 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring dark:caret-white/80"
+      class="col-start-1 row-start-1 h-full resize-none whitespace-pre-wrap break-all rounded-md border border-transparent bg-transparent p-2 font-mono text-transparent caret-black/80 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring dark:caret-white/80"
+      @keydown="onKeyDown"
     />
     <div
-      class="absolute right-0 top-0 rounded-bl-md rounded-tr-md bg-muted px-1.5 pt-0.5 font-mono text-xs text-muted-foreground group-focus-within:bg-ring group-focus-within:text-white"
+      class="absolute right-0 top-0 rounded-bl-md rounded-tr-md bg-muted px-1.5 pt-0.5 font-mono text-xs text-muted-foreground group-focus-within/editor:bg-ring group-focus-within/editor:text-white"
     >
       {{ shortLang }}
     </div>
@@ -70,4 +72,20 @@ const shortLang = computed(() => {
   }
   return props.lang;
 });
+
+function onKeyDown(e: KeyboardEvent) {
+  if (e.key === "Tab") {
+    e.preventDefault();
+    const el = textarea.value!;
+    const start = el.selectionStart;
+    const end = el.selectionEnd;
+
+    model.value =
+      model.value.substring(0, start) + "\t" + model.value.substring(end);
+
+    nextTick(() => {
+      el.selectionStart = el.selectionEnd = start + 1;
+    });
+  }
+}
 </script>

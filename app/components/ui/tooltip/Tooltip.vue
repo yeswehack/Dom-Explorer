@@ -6,17 +6,19 @@ import {
   type TooltipRootProps,
   useForwardPropsEmits,
 } from "radix-vue";
+import type { HTMLAttributes } from "vue";
 
 const props = defineProps<
   TooltipRootProps & {
     label?: string;
     side?: TooltipContentProps["side"];
+    class?: HTMLAttributes["class"];
   }
 >();
 const emits = defineEmits<TooltipRootEmits>();
 
 const delegatedProps = computed(() => {
-  const { label, side, disabled, ...delegated } = props;
+  const { label, side, disabled, class: cls, ...delegated } = props;
 
   return delegated;
 });
@@ -32,10 +34,10 @@ const open = computed(() => {
 
 <template>
   <TooltipRoot v-bind="forwarded" :open="open">
-    <TooltipTrigger ref="trigger">
+    <TooltipTrigger ref="trigger" >
       <slot />
     </TooltipTrigger>
-    <TooltipContent v-if="label" :side="side">
+    <TooltipContent v-if="label" :side="side" :class="$props.class">
       <p>{{ label }}</p>
     </TooltipContent>
   </TooltipRoot>

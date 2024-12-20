@@ -1,24 +1,34 @@
-export { FlagIcon } from "lucide-vue-next";
-export { CheckIcon } from "lucide-vue-next";
-export { CopyIcon } from "lucide-vue-next";
-export { ChevronsUpDownIcon } from "lucide-vue-next";
-export { PlusIcon } from "lucide-vue-next";
-export { EyeIcon } from "lucide-vue-next";
-export { EyeOffIcon } from "lucide-vue-next";
-export { BanIcon } from "lucide-vue-next";
-export { TrashIcon } from "lucide-vue-next";
-export { CableIcon } from "lucide-vue-next";
-export { LoaderCircleIcon } from "lucide-vue-next";
-export { SaveIcon } from "lucide-vue-next";
-export { ScanIcon } from "lucide-vue-next";
-export { ChevronsDownUpIcon } from "lucide-vue-next";
-export { GripHorizontalIcon } from "lucide-vue-next";
-export { Circle } from "lucide-vue-next";
-export { CircleIcon } from "lucide-vue-next";
-export { SettingsIcon } from "lucide-vue-next";
-export { PencilIcon } from "lucide-vue-next";
-export { RefreshCwIcon } from "lucide-vue-next";
-export { NetworkIcon } from "lucide-vue-next";
-export { DicesIcon } from "lucide-vue-next";
-export { ScanTextIcon } from "lucide-vue-next";
-export { BookMarkedIcon } from "lucide-vue-next";
+export {
+  BanIcon,
+  BookHeartIcon,
+  BookMarkedIcon,
+  CableIcon,
+  CheckIcon,
+  ChevronsDownUpIcon,
+  ChevronsUpDownIcon,
+  CircleIcon,
+  CopyIcon,
+  DicesIcon,
+  DotIcon,
+  ExternalLinkIcon,
+  EyeIcon,
+  EyeOffIcon,
+  FlagIcon,
+  GripHorizontalIcon,
+  LinkIcon,
+  LoaderCircleIcon,
+  LogInIcon,
+  NetworkIcon,
+  PencilIcon,
+  PlayIcon,
+  PlusIcon,
+  QrCodeIcon,
+  RefreshCwIcon,
+  SaveIcon,
+  ScanIcon,
+  ScanTextIcon,
+  SettingsIcon,
+  TrashIcon,
+  TriangleAlertIcon,
+  XIcon,
+} from "lucide-vue-next";

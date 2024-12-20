@@ -1,16 +1,13 @@
 <template>
   <SearchInput
-    align="start"
-    label="+"
     :groups="groups"
     :model-value="undefined"
+    :align="align"
     @update:model-value="create"
   >
     <template #button>
       <slot>
-        <Button size="icon" class="size-6">
-          <Icon name="plus" class="size-5" />
-        </Button>
+        <Button size="iconSm" icon="plus" class="size-6" />
       </slot>
     </template>
   </SearchInput>
@@ -20,12 +17,19 @@
 import { createPipe, isValidPipeName, type Pipe } from "~/types";
 import { pipes } from "../Pipes";
 
-const props = defineProps<{
-  allowEmpty?: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    allowEmpty?: boolean;
+    align?: "start" | "end" | "center";
+  }>(),
+  {
+    allowEmpty: false,
+    align: "center",
+  },
+);
 
 const emit = defineEmits<{
-  create: [Pipe];
+  create: [Pipe[]];
   createEmpty: [];
 }>();
 
@@ -42,6 +46,9 @@ const presetsChoices = computed(() => {
     })
     .filter((p) => {
       return !!p;
+    })
+    .toSorted((a, b) => {
+      return a.label.localeCompare(b.label);
     });
 });
 
@@ -67,8 +74,6 @@ const groups = computed(() => {
   if (presetsChoices.value.length > 0) {
     groups.push({ name: "Preset", items: presetsChoices.value });
   }
-  groups.push({ name: "DEV", items: [] });
-  groups.push({ name: "Preset", items: [] });
   groups.push({ name: "Parser", items: [] });
   groups.push({ name: "Sanitizer", items: [] });
   groups.push({ name: "Render", items: [] });
@@ -89,18 +94,16 @@ const groups = computed(() => {
 
 function create(name: string) {
   if (name === "$empty") {
-    emit("createEmpty");
+    emit("create", []);
     return;
   }
   if (name.startsWith("preset:")) {
     const preset = presets.value.find((p) => p.id === name.slice(7));
     if (!preset) return;
-    for (const pipe of preset.pipes) {
-      emit("create", clonePipe(pipe));
-    }
+    emit("create", preset.pipes.map(clonePipe));
   } else if (isValidPipeName(name)) {
     const newPipe = createPipe(name);
-    emit("create", newPipe);
+    emit("create", [newPipe]);
   }
 }
 </script>

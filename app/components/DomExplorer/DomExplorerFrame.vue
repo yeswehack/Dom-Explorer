@@ -13,11 +13,12 @@
       autofocus
       :copy-code="false"
     />
-    <Pipeline v-if="pipeline" :input="state.input ?? ''" :pipeline="pipeline" />
+    <Pipelines :state="state" :read-only="settings.readonly" is-embed />
     <a
+      v-if="isEmbed"
       :href="href"
       target="_blank"
-      class="absolute bottom-0 right-0 flex items-center rounded-tl border-l border-t border-[#00dc8266] bg-gray-900 px-2 text-[0.7rem] tracking-wide group-hover:pointer-events-none"
+      class="fixed bottom-0 right-0 z-[100] flex items-center rounded-tl border-l border-t border-[#00dc8266] bg-gray-900 px-2 text-[0.7rem] tracking-wide"
     >
       <DomExplorerIcon class="size-4" />
     </a>
@@ -27,28 +28,18 @@
 <script setup lang="ts">
 import type { DomExplorerState } from "~/types";
 
-definePageMeta({
-  layout: "empty",
-});
-
-const props = defineProps<{
+defineProps<{
   state: DomExplorerState;
-  filter?: string;
+  isEmbed?: boolean;
 }>();
 
-const pipeline = computed(() => {
-  if (props.filter) {
-    return props.state.pipelines.find((p) => p.id === props.filter);
-  }
-  return props.state.pipelines.at(0);
-});
-
 const settings = useDomExplorerSettings();
-
+const route = useRoute();
 const href = computed(() => {
-  const url = new URL("/Dom-Explorer/dom-explorer", window.location.origin);
-  url.hash = window.location.hash;
-
-  return url.href;
+  return resolveRemoteLink({
+    name: "index",
+    query: route.query,
+    hash: route.hash,
+  });
 });
 </script>

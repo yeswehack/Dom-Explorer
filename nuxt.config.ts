@@ -1,6 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-
-const baseURL = "/Dom-Explorer/";
+import env from "./env";
 
 export default defineNuxtConfig({
   ssr: false,
@@ -11,6 +10,7 @@ export default defineNuxtConfig({
   experimental: {
     appManifest: false,
   },
+
   typescript: {
     strict: true,
     tsConfig: {
@@ -19,19 +19,26 @@ export default defineNuxtConfig({
       },
     },
   },
-  devtools: { enabled: true },
+  devtools: {
+    enabled: true,
+  },
   app: {
-    baseURL,
+    baseURL: env.BASE_URL,
     head: {
       link: [
-        { rel: "icon", type: "image/svg+xml", href: `${baseURL}/icon.svg` },
+        { rel: "icon", type: "image/svg+xml", href: `${env.BASE_URL}/icon.svg` },
       ],
       title: "Dom-Explorer",
     },
   },
   runtimeConfig: {
     app: {
-      baseURL,
+      baseURL: env.BASE_URL,
+    },
+    public: {
+      withSupabase: !!env.SUPABASE_KEY && !!env.SUPABASE_URL,
+      supabaseUrl: env.SUPABASE_URL,
+      supabaseKey: env.SUPABASE_KEY,
     },
   },
   modules: [
@@ -42,7 +49,7 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
   ],
   tailwindcss: {
-    configPath: "tailwind.config.js",
+    configPath: "tailwind.config.ts",
     cssPath: "@/assets/style.css",
   },
   imports: {

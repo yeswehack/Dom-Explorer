@@ -8,6 +8,7 @@ export default withNuxt({
     "vue/multi-word-component-names": "off",
     "vue/no-v-html": "off",
     "vue/html-self-closing": "off",
+    "@typescript-eslint/no-unused-expressions": "off",
   },
 }).append({
   ignores: ["extras/*"],

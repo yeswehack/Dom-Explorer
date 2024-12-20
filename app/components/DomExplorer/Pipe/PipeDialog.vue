@@ -1,9 +1,11 @@
 <template>
   <Dialog>
     <DialogTrigger>
-      <Button size="icon" variant="ghost" class="-ml-1 size-7 p-1">
-        <Icon :name="readOnly ? 'settings' : 'pencil'" class="size-3.5" />
-      </Button>
+      <Button
+        size="iconSm"
+        variant="ghost"
+        :icon="readOnly ? 'settings' : 'settings'"
+      />
     </DialogTrigger>
     <DialogContent
       class="max-h-[calc(100dvh-2rem)] w-max max-w-[calc(100vw-2rem)] overflow-auto"
@@ -24,7 +26,7 @@
       </div>
       <DialogFooter>
         <DialogClose>
-          <Button size="sm">Close</Button>
+          <Button size="sm" label="Close" />
         </DialogClose>
       </DialogFooter>
     </DialogContent>

@@ -2,6 +2,9 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import type { Pipe, Pipeline } from "../types";
 import { z } from "zod";
+import { detect } from "detect-browser";
+import type { TypedRouteLocationRawFromName } from "#build/typed-router/__router";
+import type { RoutesNamesList } from "#build/typed-router/__routes";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -94,6 +97,7 @@ export function definePipe<
     opts: opts.opts,
     parser: z.object({
       name: z.literal<TName>(opts.name),
+      displayName: z.string().optional(),
       id: z
         .string()
         .min(1)
@@ -108,3 +112,16 @@ export function definePipe<
 export type InferPipeOpts<T> = T extends { parser: z.ZodTypeAny }
   ? z.infer<T["parser"]>["opts"]
   : never;
+
+export function getBrowserName() {
+  const browser = detect(navigator.userAgent);
+  if (!browser) return "Unknown";
+  return `${browser.name} ${browser.version ?? ""}`;
+}
+
+export function resolveRemoteLink(
+  to: TypedRouteLocationRawFromName<RoutesNamesList, string>,
+) {
+  const url = useRouter().resolve(to);
+  return new URL(url.href, window.origin).href;
+}

@@ -14,10 +14,10 @@
         <span v-if="suffix" class="text-muted-foreground/50">{{ suffix }}</span>
       </div>
       <div class="ml-auto self-start" :class="color">
-        {{ shortNs }}
+        {{ showNs ? shortNs : "" }} {{ showDepth ? depth : "" }}
       </div>
     </div>
-    <div class="flex flex-col pl-3 pr-1 empty:hidden">
+    <div class="flex flex-col pl-3 empty:hidden" :class="indentRight && 'pr-1'">
       <slot />
     </div>
   </div>
@@ -34,6 +34,7 @@ const props = withDefaults(
     ns?: string;
     class?: HTMLElement["className"];
     hideName?: boolean;
+    depth?: number;
   }>(),
   {
     prefix: "<",
@@ -43,6 +44,8 @@ const props = withDefaults(
     class: "",
   },
 );
+
+const { showDepth, showNs, indentRight } = useUserSettings();
 
 const shortNs = computed(() => {
   switch (props.ns) {

@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
   :root {
     /* Name: custom color palette
@@ -9,7 +10,7 @@
        URL: https://gradient.page */
 
     /* CSS: .bg-gradient { background: var(--gradient) } */
-    --gradient: linear-gradient(to top left,#000C40,#607D8B);
+    --gradient: linear-gradient(to top left, #000c40, #607d8b);
     --background: 243 100% 98.26%;
     --foreground: 243 10% 0.52%;
 
@@ -41,7 +42,6 @@
 
     --radius: 0.5rem;
 
-    
     /* Name: custom color palette
        Author: Ilias Ism
        URL: https://gradient.page */
@@ -87,5 +87,5 @@
 }
 
 html {
-  @apply bg-black text-foreground;
+  @apply text-foreground bg-black;
 }
