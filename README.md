@@ -36,7 +36,7 @@ To get started with Dom-Explorer:
 
 1. Clone the project and install dependencies:
    ```bash
-   git clone https://github.com/b-i-t-k/Dom-Explorer.git
+   git clone https://github.com/yeswehack/Dom-Explorer
    cd Dom-Explorer
    bun install
    ```
